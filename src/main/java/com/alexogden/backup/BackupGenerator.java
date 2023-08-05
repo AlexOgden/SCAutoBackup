@@ -54,7 +54,7 @@ public class BackupGenerator {
 		for (World world : worlds) {
 			final File worldPath = world.getWorldFolder().getAbsoluteFile();
 			final String destinationPath = generateFilePath(SCAutoBackup.getInstance().getConfig()
-					.getString("backup.worlds.destination-folder"));
+					.getString("backup.worlds.destination-folder") + "/" + world.getName());
 
 			try {
 				ZipUtil.zipFolder(worldPath, new File(destinationPath), Collections.singletonList(""));
