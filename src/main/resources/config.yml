@@ -1,0 +1,19 @@
+backup:
+  enabled: true
+  interval: 30
+  broadcast: true
+  worlds:
+    enabled: true
+    save-before: true
+    destination-folder: backups/worlds/
+    max-backups: 30
+  plugins:
+    enabled: true
+    max-backups: 3
+    destination-folder: backups/plugins
+    excluded-folders:
+      - dynmap/web/tiles
+save:
+  enabled: false
+  interval: 10
+  broadcast: true
