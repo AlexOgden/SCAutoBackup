@@ -10,7 +10,9 @@ public class SaveTask implements Runnable {
 
 	@Override
 	public void run() {
-		MessageLogger.broadcast("<gray>Saving World...</gray>");
+		boolean broadcastMessages = SCAutoBackup.getInstance().getConfig().getBoolean("save.broadcast");
+		if (broadcastMessages)
+			MessageLogger.broadcast("<gray>Saving World...</gray>");
 		saveWorlds();
 		savePlayers();
 	}
