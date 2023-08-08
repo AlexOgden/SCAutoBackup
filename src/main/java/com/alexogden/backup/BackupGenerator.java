@@ -65,7 +65,7 @@ public class BackupGenerator {
 			}
 
 			BackupTrimmer backupTrimmer = new BackupTrimmer(outputDirectory, SCAutoBackup.getInstance().getConfig()
-					.getInt("backup.plugins.max-backups"));
+					.getInt("backup.worlds.max-backups"));
 			backupTrimmer.trimExcessBackups();
 		}
 	}
