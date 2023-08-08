@@ -48,8 +48,6 @@ public class SCAutoBackup extends JavaPlugin {
 		command.setTabCompleter(new CmdTabCompleter());
 
 		scheduleTasks();
-
-		getLogger().info("SCAutoBackup Enabled");
 	}
 
 	@Override
