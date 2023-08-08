@@ -16,7 +16,7 @@ public class CommandHandler implements CommandExecutor {
 		}
 
 		if (arguments.length != 1) {
-			MessageLogger.sendMessage(commandSender, "<red>ERROR:</red> command only accepts one sub-command!");
+			MessageLogger.sendMessage(commandSender, "<red>ERROR:</red> command only accepts one sub-command! <save | backup>");
 			return false;
 		}
 
