@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class MessageLogger {
 
 	public static void sendMessage(CommandSender sender, String message) {
-		if (!message.equals("")) {
+		if (!message.isEmpty()) {
 			var miniMessage = MiniMessage.miniMessage();
 			Component parsed = miniMessage.deserialize(message);
 
@@ -18,7 +18,7 @@ public class MessageLogger {
 	}
 
 	public static void broadcast(String message) {
-		if (!message.equals("")) {
+		if (!message.isEmpty()) {
 			var miniMessage = MiniMessage.miniMessage();
 			Component parsed = miniMessage.deserialize("<aqua>[SCAB]</aqua>: " + message);
 

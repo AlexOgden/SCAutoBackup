@@ -77,7 +77,7 @@ public class ZipUtil {
 			Bukkit.getLogger().warning("Failed to backup file: " + srcFile.getAbsolutePath() + ", reason: exception when opening reading channel: " + e.getMessage());
 			return;
 		}
-		int firstByte = -1;
+		int firstByte;
 
 		// Check if we can read from input stream
 		try {
