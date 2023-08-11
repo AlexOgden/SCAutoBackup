@@ -4,6 +4,7 @@ package com.alexogden.core;
 import com.alexogden.backup.BackupTask;
 import com.alexogden.command.CmdTabCompleter;
 import com.alexogden.command.CommandHandler;
+import com.alexogden.event.PlayerEventListener;
 import com.alexogden.save.SaveTask;
 import com.alexogden.util.TimeUtil;
 import org.bukkit.Bukkit;
@@ -46,6 +47,8 @@ public class SCAutoBackup extends JavaPlugin {
 		var command = this.getCommand("scab");
 		command.setExecutor(new CommandHandler());
 		command.setTabCompleter(new CmdTabCompleter());
+
+		getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
 
 		scheduleTasks();
 	}

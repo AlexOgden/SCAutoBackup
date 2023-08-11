@@ -2,13 +2,17 @@ package com.alexogden.backup;
 
 import com.alexogden.core.SCAutoBackup;
 import com.alexogden.core.logging.MessageLogger;
+import com.alexogden.task.ServerTask;
 import org.bukkit.Bukkit;
 
 import java.util.List;
 
-public class BackupTask implements Runnable {
+public class BackupTask extends ServerTask {
 	@Override
 	public void run() {
+		if (isPaused()) {
+			return;
+		}
 		boolean broadcastMessages = SCAutoBackup.getInstance().getConfig().getBoolean("backup.broadcast");
 		// First save the world and player data
 		SCAutoBackup.getInstance().getSaveTask().run();
@@ -22,6 +26,7 @@ public class BackupTask implements Runnable {
 			List<String> excludedFiles = SCAutoBackup.getInstance().getConfig().getStringList("backup.plugins.excluded-folders");
 
 			BackupGenerator.getInstance().createBackup(backupWorlds, backupPlugins, excludedFiles);
+
 			if (broadcastMessages)
 				MessageLogger.broadcast("<green><bold>Backup Complete</bold></green>");
 		});

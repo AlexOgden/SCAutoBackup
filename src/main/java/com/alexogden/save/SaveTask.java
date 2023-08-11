@@ -2,11 +2,12 @@ package com.alexogden.save;
 
 import com.alexogden.core.SCAutoBackup;
 import com.alexogden.core.logging.MessageLogger;
+import com.alexogden.task.ServerTask;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class SaveTask implements Runnable {
+public class SaveTask extends ServerTask {
 
 	@Override
 	public void run() {
