@@ -1,5 +1,5 @@
 name: SCAutoBackup
-version: 0.1.0
+version: 0.2.0
 main: com.alexogden.core.SCAutoBackup
 description: SkyCraft World Backup Utility
 author: Alex Ogden
@@ -9,5 +9,5 @@ api-version: '1.20'
 commands:
   scab:
     description: Manually Trigger a Backup or Save
-    usage: /scab <save | backup>
+    usage: /scab <save | backup | pause | resume>
     permission: scbackup.admin
