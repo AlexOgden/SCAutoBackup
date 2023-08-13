@@ -51,6 +51,11 @@ public class SCAutoBackup extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
 
 		scheduleTasks();
+
+		if(getConfig().getBoolean("backup.pause-on-start")) {
+			backupTask.pause();
+			getLogger().info("Auto Backup Paused");
+		}
 	}
 
 	@Override

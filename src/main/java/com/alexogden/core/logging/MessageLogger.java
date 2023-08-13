@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class MessageLogger {
 
-	public static void sendMessage(CommandSender sender, String message) {
+	public static void sendPlayerMessage(CommandSender sender, String message) {
 		if (!message.isEmpty()) {
 			var miniMessage = MiniMessage.miniMessage();
 			Component parsed = miniMessage.deserialize(message);

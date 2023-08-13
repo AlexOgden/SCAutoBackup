@@ -1,7 +1,7 @@
 package com.alexogden.event;
 
 import com.alexogden.core.SCAutoBackup;
-import com.alexogden.task.ServerTask;
+import com.alexogden.core.ServerTask;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

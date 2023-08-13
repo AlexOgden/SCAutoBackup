@@ -1,4 +1,4 @@
-package com.alexogden.task;
+package com.alexogden.core;
 
 public abstract class ServerTask implements Runnable {
 	private boolean paused = false;

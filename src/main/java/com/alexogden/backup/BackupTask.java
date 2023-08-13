@@ -1,8 +1,8 @@
 package com.alexogden.backup;
 
 import com.alexogden.core.SCAutoBackup;
+import com.alexogden.core.ServerTask;
 import com.alexogden.core.logging.MessageLogger;
-import com.alexogden.task.ServerTask;
 import org.bukkit.Bukkit;
 
 import java.util.List;
