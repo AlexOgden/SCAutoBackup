@@ -1,6 +1,7 @@
 package com.alexogden.backup;
 
 import com.alexogden.core.SCAutoBackup;
+import com.alexogden.core.logging.MessageLogger;
 import com.alexogden.util.ZipUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,6 +12,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 public class BackupGenerator {
 	private static BackupGenerator instance;
@@ -31,18 +33,18 @@ public class BackupGenerator {
 
 	public void createBackup(boolean worlds, boolean plugins, List<String> excludedFiles) {
 		if (backupInProgress) {
-			Bukkit.getLogger().warning("Backup already in progress!");
+			MessageLogger.sendConsoleMessage(Level.WARNING, "Backup already in progress!");
 			return;
 		}
 
 		backupInProgress = true;
 
 		if (worlds) {
-			Bukkit.getLogger().info("Backing Up Worlds");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Backing Up Worlds");
 			backupWorlds();
 		}
 		if (plugins) {
-			Bukkit.getLogger().info("Backing Up Plugins");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Backing Up Plugins");
 			backupPlugins(excludedFiles);
 		}
 
@@ -60,7 +62,7 @@ public class BackupGenerator {
 				ZipUtil.zipFolder(worldPath, new File(destinationPath), Collections.singletonList(""));
 			} catch (IOException e) {
 				backupInProgress = false;
-				Bukkit.getLogger().warning("Cannot ZIP world folder!");
+				MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP world folder!");
 				throw new RuntimeException(e);
 			}
 
@@ -79,7 +81,7 @@ public class BackupGenerator {
 			ZipUtil.zipFolder(pluginsPath, new File(destinationPath), excludedFolders);
 		} catch (IOException e) {
 			backupInProgress = false;
-			Bukkit.getLogger().warning("Cannot ZIP plugins folder!");
+			MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP plugins folder!");
 			throw new RuntimeException(e);
 		}
 

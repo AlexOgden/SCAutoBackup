@@ -4,10 +4,11 @@ import com.alexogden.backup.BackupGenerator;
 import com.alexogden.core.SCAutoBackup;
 import com.alexogden.core.ServerTask;
 import com.alexogden.core.logging.MessageLogger;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.util.logging.Level;
 
 public class CommandHandler implements CommandExecutor {
 	@Override
@@ -60,11 +61,11 @@ public class CommandHandler implements CommandExecutor {
 		if (pause) {
 			SCAutoBackup.getInstance().getBackupTask().pause();
 			MessageLogger.sendPlayerMessage(commandSender, "Auto Backup <bold><red>PAUSED</red></bold>");
-			Bukkit.getLogger().info("Auto Backup Paused");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Paused");
 		} else {
 			SCAutoBackup.getInstance().getBackupTask().resume();
 			MessageLogger.sendPlayerMessage(commandSender, "Auto Backup <bold><green>RESUMED</green></bold>");
-			Bukkit.getLogger().info("Auto Backup Resumed");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Resumed");
 		}
 	}
 }

@@ -1,26 +1,37 @@
 package com.alexogden.core.logging;
 
+import com.alexogden.core.SCAutoBackup;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MessageLogger {
 
-	public static void sendPlayerMessage(CommandSender sender, String message) {
+	public static void sendPlayerMessage(final CommandSender sender, final String message) {
 		if (!message.isEmpty()) {
 			var miniMessage = MiniMessage.miniMessage();
 			Component parsed = miniMessage.deserialize(message);
-
 			sender.sendMessage(parsed);
 		}
 	}
 
-	public static void broadcast(String message) {
+	public static void sendConsoleMessage(final Level logLevel, final String message) {
+		final Logger consoleLogger = SCAutoBackup.getInstance().getLogger();
+		if (!message.isEmpty()) {
+			consoleLogger.log(logLevel, message);
+		}
+	}
+
+	public static void broadcast(final String message) {
 		if (!message.isEmpty()) {
 			var miniMessage = MiniMessage.miniMessage();
-			Component parsed = miniMessage.deserialize("<aqua>[SCAB]</aqua>: " + message);
+			String prefix = "<aqua>[SCAB]</aqua>: ";
+			Component parsed = miniMessage.deserialize(prefix + message);
 
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 				player.sendMessage(parsed);

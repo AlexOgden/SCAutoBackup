@@ -1,11 +1,12 @@
 package com.alexogden.backup;
 
+import com.alexogden.core.logging.MessageLogger;
 import com.alexogden.util.FileUtil;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.logging.Level;
 
 public class BackupTrimmer {
 
@@ -32,9 +33,9 @@ public class BackupTrimmer {
 				for (File backupToDelete : backupsToDelete) {
 					if (backupToDelete.isFile()) {
 						if (backupToDelete.delete()) {
-							Bukkit.getLogger().info("Deleted backup file: " + backupToDelete.getName());
+							MessageLogger.sendConsoleMessage(Level.INFO, "Deleted backup file: " + backupToDelete.getName());
 						} else {
-							Bukkit.getLogger().info("Failed to delete backup file: " + backupToDelete.getName());
+							MessageLogger.sendConsoleMessage(Level.INFO, "Failed to delete backup file: " + backupToDelete.getName());
 						}
 					}
 				}

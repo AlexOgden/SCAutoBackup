@@ -4,14 +4,18 @@ package com.alexogden.core;
 import com.alexogden.backup.BackupTask;
 import com.alexogden.command.CmdTabCompleter;
 import com.alexogden.command.CommandHandler;
+import com.alexogden.core.logging.MessageLogger;
 import com.alexogden.event.PlayerEventListener;
 import com.alexogden.save.SaveTask;
 import com.alexogden.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SCAutoBackup extends JavaPlugin {
 
@@ -54,24 +58,24 @@ public class SCAutoBackup extends JavaPlugin {
 
 		if(getConfig().getBoolean("backup.pause-on-start")) {
 			backupTask.pause();
-			getLogger().info("Auto Backup Paused");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Paused");
 		}
 	}
 
 	@Override
 	public void onDisable() {
 		for (var taskID : taskIDs) {
-			getLogger().info("Cancelling Async Task");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Cancelling Async Task");
 			getServer().getScheduler().cancelTask(taskID);
 		}
 
-		getLogger().info("Task Threads Cancelled!");
+		MessageLogger.sendConsoleMessage(Level.INFO, "Task Threads Cancelled!");
 	}
 
 	private void scheduleTasks() {
 		// Backup Thread
 		if (getConfig().getBoolean("backup.enabled")) {
-			getLogger().info("Auto Backup Enabled");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Enabled");
 			long interval = TimeUtil.convertMinutesToTicks(getConfig().getInt("backup.interval"));
 			taskIDs.add(getServer().getScheduler()
 					.runTaskTimerAsynchronously(this, backupTask, interval,
@@ -81,7 +85,7 @@ public class SCAutoBackup extends JavaPlugin {
 
 		// Save Thread
 		if (getConfig().getBoolean("save.enabled")) {
-			getLogger().info("Auto Save Enabled");
+			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Save Enabled");
 			long interval = TimeUtil.convertMinutesToTicks(getConfig().getInt("save.interval"));
 			taskIDs.add(getServer().getScheduler()
 					.runTaskTimerAsynchronously(this, saveTask, interval,
@@ -96,5 +100,9 @@ public class SCAutoBackup extends JavaPlugin {
 
 	public SaveTask getSaveTask() {
 		return saveTask;
+	}
+
+	public @NotNull Logger getLogger() {
+		return super.getLogger();
 	}
 }
