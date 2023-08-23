@@ -23,7 +23,7 @@ public class CmdTabCompleter implements TabCompleter {
 				completions.add("pause");
 				completions.add("resume");
 			}
-			// Filter and return the tab-completion options based on what the player has typed so far
+
 			return StringUtil.copyPartialMatches(args[args.length - 1], completions, new ArrayList<>());
 		}
 

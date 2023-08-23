@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class SaveTask extends ServerTask {
 
 	@Override
-	public void run() {
+	public void executeTask() {
 		boolean broadcastMessages = SCAutoBackup.getInstance().getConfig().getBoolean("save.broadcast");
 		if (broadcastMessages)
 			MessageLogger.broadcast("<gray>Saving World...</gray>");

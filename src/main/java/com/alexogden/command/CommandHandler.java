@@ -39,10 +39,10 @@ public class CommandHandler implements CommandExecutor {
 	}
 
 	private void handleBackupCommand(CommandSender commandSender) {
-		MessageLogger.sendPlayerMessage(commandSender, "<aqua>Starting Manual Backup</aqua>");
 		if (BackupGenerator.getInstance().isBackupInProgress()) {
 			MessageLogger.sendPlayerMessage(commandSender, "<red>Backup already in progress!</red>");
 		} else {
+			MessageLogger.sendPlayerMessage(commandSender, "<aqua>Starting Manual Backup</aqua>");
 			SCAutoBackup.getInstance().getBackupTask().run();
 		}
 	}

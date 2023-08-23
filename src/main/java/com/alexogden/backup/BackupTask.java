@@ -3,14 +3,20 @@ package com.alexogden.backup;
 import com.alexogden.core.SCAutoBackup;
 import com.alexogden.core.ServerTask;
 import com.alexogden.core.logging.MessageLogger;
+import com.alexogden.util.TimeUtil;
 import org.bukkit.Bukkit;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class BackupTask extends ServerTask {
 	@Override
-	public void run() {
+	public void executeTask() {
 		if (isPaused()) {
+			return;
+		}
+		if (TimeUtil.getSecondsSince(getLastExecutionTime()) < 30) {
+			MessageLogger.sendConsoleMessage(Level.INFO, "Last backup was less than 30 seconds ago. Aborting.");
 			return;
 		}
 		boolean broadcastMessages = SCAutoBackup.getInstance().getConfig().getBoolean("backup.broadcast");

@@ -18,12 +18,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SCAutoBackup extends JavaPlugin {
-
 	private static SCAutoBackup instance;
 
 	private static BackupTask backupTask;
 	private static SaveTask saveTask;
-
 	private final List<Integer> taskIDs;
 
 	public SCAutoBackup() {
