@@ -5,6 +5,7 @@ import com.alexogden.core.logging.MessageLogger;
 import com.alexogden.util.ZipUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class BackupGenerator {
 	private final List<World> worlds;
 	private boolean backupInProgress;
 
-	public BackupGenerator() {
+	private BackupGenerator() {
 		worlds = Bukkit.getWorlds();
 		backupInProgress = false;
 	}
@@ -85,9 +86,9 @@ public class BackupGenerator {
 			throw new RuntimeException(e);
 		}
 
-		BackupTrimmer backupTrimmer = new BackupTrimmer(SCAutoBackup.getInstance().getConfig()
-				.getString("backup.plugins.destination-folder"), SCAutoBackup.getInstance().getConfig()
-						.getInt("backup.plugins.max-backups"));
+		FileConfiguration pluginConfig = SCAutoBackup.getInstance().getConfig();
+		BackupTrimmer backupTrimmer = new BackupTrimmer(pluginConfig.getString("backup.plugins.destination-folder"),
+				pluginConfig.getInt("backup.plugins.max-backups"));
 		backupTrimmer.trimExcessBackups();
 	}
 
