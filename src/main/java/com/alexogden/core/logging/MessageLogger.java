@@ -21,8 +21,8 @@ public class MessageLogger {
 	}
 
 	public static void sendConsoleMessage(final Level logLevel, final String message) {
-		final Logger consoleLogger = SCAutoBackup.getInstance().getLogger();
 		if (!message.isEmpty()) {
+			final Logger consoleLogger = SCAutoBackup.getInstance().getLogger();
 			consoleLogger.log(logLevel, message);
 		}
 	}
