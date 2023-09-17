@@ -1,6 +1,7 @@
 package com.alexogden.command;
 
 import com.alexogden.backup.BackupGenerator;
+import com.alexogden.backup.BackupTask;
 import com.alexogden.core.SCAutoBackup;
 import com.alexogden.core.ServerTask;
 import com.alexogden.core.logging.MessageLogger;
@@ -39,11 +40,25 @@ public class CommandHandler implements CommandExecutor {
 	}
 
 	private void handleBackupCommand(CommandSender commandSender) {
-		if (BackupGenerator.getInstance().isBackupInProgress()) {
+		BackupGenerator backupGenerator = BackupGenerator.getInstance();
+		SCAutoBackup autoBackup = SCAutoBackup.getInstance();
+		BackupTask backupTask = autoBackup.getBackupTask();
+
+		if (backupGenerator.isBackupInProgress()) {
 			MessageLogger.sendPlayerMessage(commandSender, "<red>Backup already in progress!</red>");
 		} else {
 			MessageLogger.sendPlayerMessage(commandSender, "<aqua>Starting Manual Backup</aqua>");
-			SCAutoBackup.getInstance().getBackupTask().run();
+			boolean backupPaused = backupTask.isPaused();
+
+			if (backupPaused) {
+				backupTask.resume();
+			}
+
+			backupTask.run();
+
+			if (backupPaused) {
+				backupTask.pause();
+			}
 		}
 	}
 
@@ -59,11 +74,11 @@ public class CommandHandler implements CommandExecutor {
 		}
 
 		if (pause) {
-			SCAutoBackup.getInstance().getBackupTask().pause();
+			backupTask.pause();
 			MessageLogger.sendPlayerMessage(commandSender, "Auto Backup <bold><red>PAUSED</red></bold>");
 			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Paused");
 		} else {
-			SCAutoBackup.getInstance().getBackupTask().resume();
+			backupTask.resume();
 			MessageLogger.sendPlayerMessage(commandSender, "Auto Backup <bold><green>RESUMED</green></bold>");
 			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Resumed");
 		}
