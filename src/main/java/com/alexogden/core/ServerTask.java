@@ -7,7 +7,7 @@ public abstract class ServerTask implements Runnable {
 	private LocalDateTime lastExecutionTime;
 
 	public ServerTask() {
-		lastExecutionTime = LocalDateTime.of(2023, 8, 1, 0, 0);
+		lastExecutionTime = LocalDateTime.of(2023, 1, 1, 0, 0);
 	}
 
 	public final void run() {
