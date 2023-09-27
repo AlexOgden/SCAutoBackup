@@ -1,5 +1,5 @@
 name: SCAutoBackup
-version: 1.0.0
+version: 1.0.1
 main: com.alexogden.core.SCAutoBackup
 description: SkyCraft World Backup Utility
 author: Alex Ogden
