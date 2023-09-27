@@ -2,6 +2,7 @@ package com.alexogden.backup;
 
 import com.alexogden.core.SCAutoBackup;
 import com.alexogden.core.logging.MessageLogger;
+import com.alexogden.exception.BackupFailedException;
 import com.alexogden.util.ZipUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -61,10 +62,10 @@ public class BackupGenerator {
 
 			try {
 				ZipUtil.zipFolder(worldPath, new File(destinationPath), Collections.singletonList(""));
-			} catch (IOException e) {
+			} catch (IOException | BackupFailedException e) {
 				backupInProgress = false;
-				MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP world folder!");
-				throw new RuntimeException(e);
+				MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP world folder! - " + e.getMessage());
+				return;
 			}
 
 			BackupTrimmer backupTrimmer = new BackupTrimmer(outputDirectory, SCAutoBackup.getInstance().getConfig()
@@ -80,10 +81,10 @@ public class BackupGenerator {
 
 		try {
 			ZipUtil.zipFolder(pluginsPath, new File(destinationPath), excludedFolders);
-		} catch (IOException e) {
+		} catch (IOException | BackupFailedException e) {
 			backupInProgress = false;
 			MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP plugins folder!");
-			throw new RuntimeException(e);
+			return;
 		}
 
 		FileConfiguration pluginConfig = SCAutoBackup.getInstance().getConfig();

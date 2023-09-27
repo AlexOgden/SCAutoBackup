@@ -1,5 +1,6 @@
 package com.alexogden.util;
 
+import com.alexogden.exception.BackupFailedException;
 import org.bukkit.Bukkit;
 
 import java.io.*;
@@ -8,7 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUtil {
-	public static void zipFolder(final File srcDir, final File destFile, List<String> excludeFolders) throws IOException {
+	public static void zipFolder(final File srcDir, final File destFile, List<String> excludeFolders) throws IOException, BackupFailedException {
 		destFile.getParentFile().mkdirs();
 
 		try (OutputStream fos = new FileOutputStream(destFile)) {
@@ -16,7 +17,7 @@ public class ZipUtil {
 		}
 	}
 
-	public static void zipFolder(final File srcDir, final OutputStream outputStream, List<String> excludeFolders) throws IOException {
+	public static void zipFolder(final File srcDir, final OutputStream outputStream, List<String> excludeFolders) throws IOException, BackupFailedException {
 		try (BufferedOutputStream bufOutStream = new BufferedOutputStream(outputStream)) {
 			try (ZipOutputStream zipOutStream = new ZipOutputStream(bufOutStream)) {
 				zipDir(excludeFolders, zipOutStream, srcDir, "");
@@ -25,7 +26,7 @@ public class ZipUtil {
 		}
 	}
 
-	private static void zipDir(List<String> excludefolders, ZipOutputStream zipOutStream, final File srcDir, String currentDir) throws IOException {
+	private static void zipDir(List<String> excludefolders, ZipOutputStream zipOutStream, final File srcDir, String currentDir) throws IOException, BackupFailedException {
 		final File zipDir = new File(srcDir, currentDir);
 
 		for (String child : FileUtil.safeList(zipDir)) {
@@ -61,13 +62,13 @@ public class ZipUtil {
 		return false;
 	}
 
-	private static void zipFile(ZipOutputStream zipOutStream, final File srcFile, final String entry) throws IOException {
+	private static void zipFile(ZipOutputStream zipOutStream, final File srcFile, final String entry) throws IOException, BackupFailedException {
 		if (srcFile.getName().equals("session.lock")) {
 			return;
 		}
 		if (!srcFile.canRead()) {
 			Bukkit.getLogger().warning("Failed to backup file: " + srcFile.getAbsolutePath() + ", reason: canRead() returned false");
-			return;
+			throw new BackupFailedException("canRead() returned false");
 		}
 		InputStream inStream;
 		try {
@@ -75,7 +76,7 @@ public class ZipUtil {
 			inStream = new FileInputStream(srcFile);
 		} catch (IOException e) {
 			Bukkit.getLogger().warning("Failed to backup file: " + srcFile.getAbsolutePath() + ", reason: exception when opening reading channel: " + e.getMessage());
-			return;
+			throw new BackupFailedException("exception when opening reading channel");
 		}
 		int firstByte;
 
@@ -84,7 +85,7 @@ public class ZipUtil {
 			firstByte = inStream.read();
 		} catch (IOException e) {
 			Bukkit.getLogger().warning("Failed to backup file: " + srcFile.getAbsolutePath() + ", reason: exception when reading first byte: " + e.getMessage());
-			return;
+			throw new BackupFailedException("exception when reading first byte");
 		}
 
 		//Empty file, put entry anyway
@@ -112,6 +113,7 @@ public class ZipUtil {
 		try {
 			inStream.close();
 		} catch (IOException ignored) {
+			throw new RuntimeException("Could not close stream");
 		}
 	}
 }
