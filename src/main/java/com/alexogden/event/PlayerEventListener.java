@@ -41,16 +41,15 @@ public class PlayerEventListener implements Listener {
 
 			if (isServerEmpty && isAutoPauseEnabled) {
 				MessageLogger.sendConsoleMessage(Level.INFO, "Server is empty - pausing auto backup");
-
-				// Don't run backup if one was taken less than 5 minutes ago
-				if (TimeUtil.getMinutesSince(backupTask.getLastExecutionTime()) > 5) {
-					MessageLogger.sendConsoleMessage(Level.INFO, "Last backup more than 5 minutes ago - executing now");
-					backupTask.run();
-				}
-
 				backupTask.pause();
 			}
-		}, 40L); // 2-Second Delay
+
+			if(plugin.getConfig().getBoolean("backup.backup-on-empty-server")
+					&& (TimeUtil.getMinutesSince(backupTask.getLastExecutionTime()) > 5)) {
+				MessageLogger.sendConsoleMessage(Level.INFO, "Last backup more than 5 minutes ago - executing now");
+				backupTask.run();
+			}
+		}, 30L);
 	}
 }
 

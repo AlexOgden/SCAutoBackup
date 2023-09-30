@@ -2,6 +2,7 @@ backup:
   enabled: true
   interval: 30
   pause-on-empty-server: true
+  backup-on-empty-server: true
   pause-on-start: false
   broadcast: true
   worlds:
