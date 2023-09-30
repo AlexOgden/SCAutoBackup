@@ -94,7 +94,7 @@ public class BackupGenerator {
 	}
 
 	private String generateFilePath(String basePath) {
-		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(System.currentTimeMillis()) + ".zip";
+		String fileName = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(System.currentTimeMillis()) + ".zip";
 		return Paths.get(basePath, fileName).toString();
 	}
 
