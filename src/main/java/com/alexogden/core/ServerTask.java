@@ -6,7 +6,7 @@ public abstract class ServerTask implements Runnable {
 	private boolean paused = false;
 	private LocalDateTime lastExecutionTime;
 
-	public ServerTask() {
+	protected ServerTask() {
 		lastExecutionTime = LocalDateTime.of(2023, 1, 1, 0, 0);
 	}
 
