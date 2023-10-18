@@ -54,42 +54,43 @@ public class BackupGenerator {
 	}
 
 	private void backupWorlds() {
+		String destinationFolder = SCAutoBackup.getInstance().getConfig().getString("backup.worlds.destination-folder");
+
 		for (World world : worlds) {
-			final File worldPath = world.getWorldFolder().getAbsoluteFile();
-			final String outputDirectory = SCAutoBackup.getInstance().getConfig()
-					.getString("backup.worlds.destination-folder") + "/" + world.getName();
-			final String destinationPath = generateFilePath(outputDirectory);
+			File worldPath = world.getWorldFolder().getAbsoluteFile();
+			String worldName = world.getName();
+			String destinationPath = generateFilePath(destinationFolder + "/" + worldName);
 
 			try {
 				ZipUtil.zipFolder(worldPath, new File(destinationPath), Collections.singletonList(""));
+				trimBackups(destinationPath, "backup.worlds.max-backups");
 			} catch (IOException | BackupFailedException e) {
 				backupInProgress = false;
 				MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP world folder! - " + e.getMessage());
-				return;
 			}
-
-			BackupTrimmer backupTrimmer = new BackupTrimmer(outputDirectory, SCAutoBackup.getInstance().getConfig()
-					.getInt("backup.worlds.max-backups"));
-			backupTrimmer.trimExcessBackups();
 		}
 	}
 
 	private void backupPlugins(List<String> excludedFolders) {
-		final File pluginsPath = new File("plugins");
-		final String destinationPath = generateFilePath(SCAutoBackup.getInstance().getConfig()
-				.getString("backup.plugins.destination-folder"));
+		String destinationFolder = SCAutoBackup.getInstance().getConfig().getString("backup.plugins.destination-folder");
+
+		File pluginsPath = new File("plugins");
+		String destinationPath = generateFilePath(destinationFolder);
 
 		try {
 			ZipUtil.zipFolder(pluginsPath, new File(destinationPath), excludedFolders);
+			trimBackups(destinationFolder, "backup.plugins.max-backups");
 		} catch (IOException | BackupFailedException e) {
 			backupInProgress = false;
 			MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP plugins folder!");
-			return;
 		}
+	}
 
+	private void trimBackups(String destinationFolder, String maxBackupsKey) {
 		FileConfiguration pluginConfig = SCAutoBackup.getInstance().getConfig();
-		BackupTrimmer backupTrimmer = new BackupTrimmer(pluginConfig.getString("backup.plugins.destination-folder"),
-				pluginConfig.getInt("backup.plugins.max-backups"));
+		int maxBackups = pluginConfig.getInt(maxBackupsKey);
+
+		BackupTrimmer backupTrimmer = new BackupTrimmer(destinationFolder, maxBackups);
 		backupTrimmer.trimExcessBackups();
 	}
 
