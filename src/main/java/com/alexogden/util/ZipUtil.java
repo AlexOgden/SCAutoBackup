@@ -9,6 +9,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUtil {
+
+	private ZipUtil() {
+		throw new IllegalStateException("Static Class");
+	}
+
 	public static void zipFolder(final File srcDir, final File destFile, List<String> excludeFolders) throws IOException, BackupFailedException {
 		destFile.getParentFile().mkdirs();
 
@@ -26,15 +31,15 @@ public class ZipUtil {
 		}
 	}
 
-	private static void zipDir(List<String> excludefolders, ZipOutputStream zipOutStream, final File srcDir, String currentDir) throws IOException, BackupFailedException {
+	private static void zipDir(List<String> excludeFolders, ZipOutputStream zipOutStream, final File srcDir, String currentDir) throws IOException, BackupFailedException {
 		final File zipDir = new File(srcDir, currentDir);
 
 		for (String child : FileUtil.safeList(zipDir)) {
 			File srcFile = new File(zipDir, child);
 
 			if (srcFile.isDirectory()) {
-				if (!isFolderExcluded(excludefolders, srcDir.getName() + File.separator + currentDir + child)) {
-					zipDir(excludefolders, zipOutStream, srcDir, currentDir + child + '/');
+				if (!isFolderExcluded(excludeFolders, srcDir.getName() + File.separator + currentDir + child)) {
+					zipDir(excludeFolders, zipOutStream, srcDir, currentDir + child + '/');
 				}
 			} else {
 				zipFile(zipOutStream, srcFile, srcDir.getName() + '/' + currentDir + child);

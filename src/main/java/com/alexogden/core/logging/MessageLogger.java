@@ -12,6 +12,10 @@ import java.util.logging.Logger;
 
 public class MessageLogger {
 
+	private MessageLogger() {
+		throw new IllegalStateException("Static Class");
+	}
+
 	public static void sendPlayerMessage(final CommandSender sender, final String message) {
 		if (!message.isEmpty()) {
 			var miniMessage = MiniMessage.miniMessage();

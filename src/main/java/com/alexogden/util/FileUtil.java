@@ -6,6 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FileUtil {
+
+	private FileUtil() {
+		throw new IllegalStateException("Static Class");
+	}
+
 	public static long getTimestampFromFilename(String filename) {
 		String timestampPart = filename.substring(0, filename.lastIndexOf('.')).replace("-", "");
 		try {
