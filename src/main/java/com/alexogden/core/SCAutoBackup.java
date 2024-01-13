@@ -20,15 +20,12 @@ import java.util.logging.Logger;
 public class SCAutoBackup extends JavaPlugin {
 	private static SCAutoBackup instance;
 
-	private static BackupTask backupTask;
-	private static SaveTask saveTask;
+	private static final BackupTask backupTask = new BackupTask();
+	private static final SaveTask saveTask = new SaveTask();
 	private final List<Integer> taskIDs;
 
 	public SCAutoBackup() {
 		instance = this;
-		backupTask = new BackupTask();
-		saveTask = new SaveTask();
-
 		taskIDs = new ArrayList<>();
 	}
 
@@ -100,6 +97,7 @@ public class SCAutoBackup extends JavaPlugin {
 		return saveTask;
 	}
 
+	@Override
 	public @NotNull Logger getLogger() {
 		return super.getLogger();
 	}
