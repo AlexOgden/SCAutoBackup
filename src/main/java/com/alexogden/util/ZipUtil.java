@@ -1,6 +1,7 @@
 package com.alexogden.util;
 
 import com.alexogden.exception.BackupFailedException;
+import com.alexogden.exception.ZipFailedException;
 import org.bukkit.Bukkit;
 
 import java.io.*;
@@ -14,7 +15,7 @@ public class ZipUtil {
 		throw new IllegalStateException("Static Class");
 	}
 
-	public static void zipFolder(final File srcDir, final File destFile, List<String> excludeFolders) throws IOException, BackupFailedException {
+	public static void zipFolder(final File srcDir, final File destFile, List<String> excludeFolders) throws IOException, BackupFailedException, ZipFailedException {
 		destFile.getParentFile().mkdirs();
 
 		try (OutputStream fos = new FileOutputStream(destFile)) {
@@ -22,7 +23,7 @@ public class ZipUtil {
 		}
 	}
 
-	public static void zipFolder(final File srcDir, final OutputStream outputStream, List<String> excludeFolders) throws IOException, BackupFailedException {
+	public static void zipFolder(final File srcDir, final OutputStream outputStream, List<String> excludeFolders) throws IOException, ZipFailedException, BackupFailedException {
 		try (BufferedOutputStream bufOutStream = new BufferedOutputStream(outputStream)) {
 			try (ZipOutputStream zipOutStream = new ZipOutputStream(bufOutStream)) {
 				zipDir(excludeFolders, zipOutStream, srcDir, "");
@@ -31,7 +32,7 @@ public class ZipUtil {
 		}
 	}
 
-	private static void zipDir(List<String> excludeFolders, ZipOutputStream zipOutStream, final File srcDir, String currentDir) throws IOException, BackupFailedException {
+	private static void zipDir(List<String> excludeFolders, ZipOutputStream zipOutStream, final File srcDir, String currentDir) throws IOException, ZipFailedException, BackupFailedException {
 		final File zipDir = new File(srcDir, currentDir);
 
 		for (String child : FileUtil.safeList(zipDir)) {
@@ -67,7 +68,7 @@ public class ZipUtil {
 		return false;
 	}
 
-	private static void zipFile(ZipOutputStream zipOutStream, final File srcFile, final String entry) throws IOException, BackupFailedException {
+	private static void zipFile(ZipOutputStream zipOutStream, final File srcFile, final String entry) throws IOException, ZipFailedException, BackupFailedException {
 		if (srcFile.getName().equals("session.lock")) {
 			return;
 		}
@@ -118,7 +119,7 @@ public class ZipUtil {
 		try {
 			inStream.close();
 		} catch (IOException ignored) {
-			throw new RuntimeException("Could not close stream");
+			throw new ZipFailedException("Could not close stream");
 		}
 	}
 }
