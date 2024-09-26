@@ -22,6 +22,7 @@ public class CmdTabCompleter implements TabCompleter {
 				completions.add("backup");
 				completions.add("pause");
 				completions.add("resume");
+				completions.add("status");
 			}
 
 			return StringUtil.copyPartialMatches(args[args.length - 1], completions, new ArrayList<>());

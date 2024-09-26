@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 
 public class CommandHandler implements CommandExecutor {
@@ -30,6 +31,7 @@ public class CommandHandler implements CommandExecutor {
 			case "backup" -> handleBackupCommand(commandSender);
 			case "pause" -> handlePauseCommand(commandSender, true);
 			case "resume" -> handlePauseCommand(commandSender, false);
+			case "status" -> handleStatusCommand(commandSender);
 			default -> MessageLogger.sendPlayerMessage(commandSender, "<red>Unknown sub-command: " + subCommand + "</red>");
 		}
 		return true;
@@ -64,10 +66,10 @@ public class CommandHandler implements CommandExecutor {
 
 	private void handlePauseCommand(CommandSender commandSender, boolean pause) {
 		ServerTask backupTask = SCAutoBackup.getInstance().getBackupTask();
-		boolean isCurrentlyPaused = backupTask.isPaused();
+		boolean isPaused = backupTask.isPaused();
 
-		if (isCurrentlyPaused == pause) {
-			String statusMessage = isCurrentlyPaused ? "<yellow>Auto Backup is already paused</yellow>"
+		if (isPaused == pause) {
+			String statusMessage = isPaused ? "<yellow>Auto Backup is already paused</yellow>"
 					: "<yellow>Auto Backup is already in action</yellow>";
 			MessageLogger.sendPlayerMessage(commandSender, statusMessage);
 			return;
@@ -82,5 +84,21 @@ public class CommandHandler implements CommandExecutor {
 			MessageLogger.sendPlayerMessage(commandSender, "Auto Backup <bold><green>RESUMED</green></bold>");
 			MessageLogger.sendConsoleMessage(Level.INFO, "Auto Backup Resumed");
 		}
+	}
+
+	private void handleStatusCommand(CommandSender commandSender) {
+		ServerTask backupTask = SCAutoBackup.getInstance().getBackupTask();
+		boolean isPaused = backupTask.isPaused();
+
+		String statusMessage = isPaused
+				? "Auto Backup Status: <bold><red>PAUSED</red></bold>"
+				: "Auto Backup Status: <bold><green>ACTIVE</green></bold>";
+
+		String lastBackupTime = backupTask.getLastExecutionTime() != null
+				? backupTask.getLastExecutionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+				: "Never";
+
+		MessageLogger.sendPlayerMessage(commandSender, statusMessage);
+		MessageLogger.sendPlayerMessage(commandSender, "Last Backup: " + lastBackupTime);
 	}
 }
