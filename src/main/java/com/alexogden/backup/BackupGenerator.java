@@ -64,7 +64,7 @@ public class BackupGenerator {
 
 			try {
 				ZipUtil.zipFolder(worldPath, new File(destinationPath), Collections.singletonList(""));
-				trimBackups(destinationPath, "backup.worlds.max-backups");
+				trimBackups(destinationFolder + "/" + worldName + "/", "backup.worlds.max-backups");
 			} catch (IOException | BackupFailedException | ZipFailedException e) {
 				backupInProgress = false;
 				MessageLogger.sendConsoleMessage(Level.WARNING, "Cannot ZIP world folder! - " + e.getMessage());
